@@ -31,7 +31,10 @@ def main():
     with open(OUTPUT_FILE, 'wb') as output_file:
         output_file.write('return {\n'.encode('utf8'))
         for short_name in sorted(short_names):
-            output_file.write(f"    ['{short_name}'] = '{short_names[short_name]}',\n".encode('utf8'))
+            # Vim doesn't seem to support abbreviations that are longer than 52
+            # characters (including the two colons added later).
+            if len(short_name) <= 50:
+                output_file.write(f"    ['{short_name}'] = '{short_names[short_name]}',\n".encode('utf8'))
         output_file.write('}\n'.encode('utf8'))
 
 if __name__ == '__main__':
