@@ -1,1 +1,1 @@
-require 'vim-emoji-abbreviations'
+require 'vim-emoji-abbreviations.abbreviations'

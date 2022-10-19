@@ -1,4 +1,4 @@
-local emoji = {
+return {
     ['copyright'] = '©',
     ['registered'] = '®',
     ['bangbang'] = '‼',
@@ -1353,7 +1353,3 @@ local emoji = {
     ['fondue'] = '🫕',
     ['teapot'] = '🫖',
 }
-
-for lhs, rhs in pairs(emoji) do
-    vim.cmd.iabbrev {':' .. lhs .. ':', rhs}
-end
