@@ -20,21 +20,30 @@ def unified_to_string(unified):
     return s
 
 def main():
-    short_names = {}
+    short_names = []
     with urllib.request.urlopen(INPUT_URL) as input_file:
         emoji_list = json.loads(input_file.read())
         for emoji in emoji_list:
             character = unified_to_string(emoji['unified'])
             for short_name in emoji['short_names']:
-                short_names[short_name] = character
+                short_names.append((short_name, character))
 
     with open(OUTPUT_FILE, 'wb') as output_file:
         output_file.write('return {\n'.encode('utf8'))
-        for short_name in sorted(short_names):
+        for short_name, character in sorted(short_names):
+            colon_name = f':{short_name}:'
+
             # Vim doesn't seem to support abbreviations that are longer than 52
-            # characters (including the two colons added later).
-            if len(short_name) <= 50:
-                output_file.write(f"    ['{short_name}'] = '{short_names[short_name]}',\n".encode('utf8'))
+            # characters.
+            if len(colon_name) <= 52:
+                label = f'{colon_name} {character}'
+                line_string = (f"    " +
+                    f"{{word = '{colon_name}', " +
+                    f"label = '{label}', " +
+                    f"filterText = '{colon_name}', " +
+                    f"character = '{character}'}},\n")
+
+                output_file.write(line_string.encode('utf8'))
         output_file.write('}\n'.encode('utf8'))
 
 if __name__ == '__main__':
