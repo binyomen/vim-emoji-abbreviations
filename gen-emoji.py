@@ -4,10 +4,10 @@
 
 import json
 import os
+import urllib.request
 
-THIS_DIR = os.path.dirname(__file__)
-INPUT_FILE = os.path.join(THIS_DIR, 'emoji.json')
-OUTPUT_FILE = os.path.join(THIS_DIR, 'lua', 'vim-emoji-abbreviations', 'emoji.lua')
+INPUT_URL = 'https://raw.githubusercontent.com/iamcal/emoji-data/master/emoji.json'
+OUTPUT_FILE = os.path.join(os.path.dirname(__file__), 'lua', 'vim-emoji-abbreviations', 'emoji.lua')
 
 def unified_to_string(unified):
     code_point_strings = unified.split('-')
@@ -21,7 +21,7 @@ def unified_to_string(unified):
 
 def main():
     short_names = {}
-    with open(INPUT_FILE, 'r') as input_file:
+    with urllib.request.urlopen(INPUT_URL) as input_file:
         emoji_list = json.loads(input_file.read())
         for emoji in emoji_list:
             character = unified_to_string(emoji['unified'])
