@@ -1,15 +1,14 @@
 #!/usr/bin/env python
 
-# Use emoji data from https://github.com/iamcal/emoji-data.
-
 import json
 import os
+from typing import Tuple
 import urllib.request
 
 INPUT_URL = 'https://raw.githubusercontent.com/iamcal/emoji-data/master/emoji.json'
 OUTPUT_FILE = os.path.join(os.path.dirname(__file__), 'lua', 'vim-emoji-abbreviations', 'emoji.lua')
 
-def unified_to_string(unified):
+def unified_to_string(unified: str) -> str:
     code_point_strings = unified.split('-')
     code_points = map(lambda s: int('0x' + s, base = 16), code_point_strings)
 
@@ -19,10 +18,10 @@ def unified_to_string(unified):
 
     return s
 
-def main():
-    short_names = []
+def main() -> None:
+    short_names: list[Tuple[str, str]] = []
     with urllib.request.urlopen(INPUT_URL) as input_file:
-        emoji_list = json.loads(input_file.read())
+        emoji_list: list[dict] = json.loads(input_file.read())
         for emoji in emoji_list:
             character = unified_to_string(emoji['unified'])
             for short_name in emoji['short_names']:
