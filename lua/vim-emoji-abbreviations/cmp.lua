@@ -21,7 +21,10 @@ function source.complete(self, params, callback)
 end
 
 function M.register_completion_source()
-    require('cmp').register_source('vim-emoji-abbreviations', source)
+    local succeeded, cmp = pcall(require, 'cmp')
+    if succeeded then
+        cmp.register_source('vim-emoji-abbreviations', source)
+    end
 end
 
 return M
