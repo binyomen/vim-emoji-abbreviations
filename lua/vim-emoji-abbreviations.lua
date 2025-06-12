@@ -11,6 +11,18 @@ local function default(v, default)
     end
 end
 
+local function setup_abbreviations_augroup()
+    local augroup_id = vim.api.nvim_create_augroup('vim-emoji-abbreviations__create_abbreviations', {})
+
+    vim.api.nvim_create_autocmd('InsertEnter', {
+        group = augroup_id,
+        once = true,
+        callback = function()
+            abbreviations.create_abbreviations()
+        end
+    })
+end
+
 function M.setup(options)
     local options = default(options, {})
 
@@ -24,7 +36,7 @@ function M.setup(options)
     local enable_nvim_cmp = default(options.enable_nvim_cmp, true)
 
     if enable_abbreviations then
-        abbreviations.create_abbreviations()
+        setup_abbreviations_augroup()
     end
 
     if enable_nvim_cmp then
