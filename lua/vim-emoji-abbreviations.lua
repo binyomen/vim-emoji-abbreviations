@@ -26,11 +26,9 @@ end
 function M.setup(options)
     local options = default(options, {})
 
-    vim.validate {
-        options = {options, 'table'},
-        ['options.enable_abbreviations'] = {options.enable_abbreviations, 'boolean', true},
-        ['options.enable_nvim_cmp'] = {options.enable_nvim_cmp, 'boolean', true},
-    }
+    vim.validate('options', options, 'table')
+    vim.validate('options.enable_abbreviations', options.enable_abbreviations, 'boolean', true)
+    vim.validate('options.enable_nvim_cmp', options.enable_nvim_cmp, 'boolean', true)
 
     local enable_abbreviations = default(options.enable_abbreviations, true)
     local enable_nvim_cmp = default(options.enable_nvim_cmp, true)
